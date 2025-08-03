@@ -35,7 +35,7 @@ public class SecurityConfig {
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         
         // For H2 Console
-        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
+        http.headers(headers -> headers.frameOptions().disable());
         
         return http.build();
     }
@@ -45,5 +45,8 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
     
-
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
