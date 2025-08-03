@@ -7,6 +7,7 @@ import com.ocms.user.dto.UserRegistrationDto;
 import com.ocms.user.entity.User;
 import com.ocms.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,7 +26,9 @@ public class UserService {
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
     
     // HashMap for storing user data in memory for quick access
     private final Map<String, User> userCache = new HashMap<>();
