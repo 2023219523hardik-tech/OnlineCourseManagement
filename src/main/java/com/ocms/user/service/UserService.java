@@ -7,6 +7,9 @@ import com.ocms.user.dto.UserRegistrationDto;
 import com.ocms.user.entity.User;
 import com.ocms.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ public class UserService {
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
     
     // HashMap for storing user data in memory for quick access
     private final Map<String, User> userCache = new HashMap<>();
@@ -51,7 +55,25 @@ public class UserService {
         return savedUser;
     }
     
-
+    public String loginUser(LoginDto loginDto) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
+            );
+            
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            
+            // Update cache
+            Optional<User> userOpt = userRepository.findByUsername(loginDto.getUsername());
+            if (userOpt.isPresent()) {
+                userCache.put(loginDto.getUsername(), userOpt.get());
+            }
+            
+            return "Login successful";
+        } catch (Exception e) {
+            throw new UnauthorizedException("Invalid credentials");
+        }
+    }
     
     public User getUserById(Long id) {
         return userRepository.findById(id)
