@@ -13,7 +13,7 @@ class PriorityQueueTest {
 
     @BeforeEach
     void setUp() {
-        priorityQueue = new PriorityQueue<>(Comparator.naturalOrder());
+        priorityQueue = new PriorityQueue<Integer>(Comparator.naturalOrder());
     }
 
     @Test
@@ -76,7 +76,7 @@ class PriorityQueueTest {
 
     @Test
     void testCustomComparator() {
-        PriorityQueue<String> stringQueue = new PriorityQueue<>(Comparator.reverseOrder());
+        PriorityQueue<String> stringQueue = new PriorityQueue<String>(Comparator.reverseOrder());
         
         stringQueue.enqueue("apple");
         stringQueue.enqueue("banana");

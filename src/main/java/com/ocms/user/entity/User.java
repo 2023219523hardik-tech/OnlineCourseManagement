@@ -1,5 +1,6 @@
 package com.ocms.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,7 @@ public class User implements UserDetails {
     private String email;
     
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
     
     @Enumerated(EnumType.STRING)
